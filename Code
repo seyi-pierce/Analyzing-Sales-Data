@@ -1,0 +1,50 @@
+# Import required libraries
+from collections import defaultdict
+
+# Initialize variables and data structures
+total_sales_A = 0
+total_sales_B = 0
+date_with_highest_sales = ""
+highest_total_sales = 0
+average_daily_sales_A = 0
+average_daily_sales_B = 0
+daily_sales_A = defaultdict(int)
+daily_sales_B = defaultdict(int)
+
+# Iterate through the sales data
+for record in sales_data:
+    date = record["date"]
+    product = record["product"]
+    sales = record["sales"]
+    
+    # Calculate total sales for each product
+    if product == "A":
+        total_sales_A += sales
+    elif product == "B":
+        total_sales_B += sales
+    
+    # Calculate daily sales for each product
+    if product == "A":
+        daily_sales_A[date] += sales
+    elif product == "B":
+        daily_sales_B[date] += sales
+
+    # Update date with the highest total sales
+    if total_sales_A + total_sales_B > highest_total_sales:
+        date_with_highest_sales = date
+        highest_total_sales = total_sales_A + total_sales_B
+
+# Calculate average daily sales for each product
+average_daily_sales_A = total_sales_A / len(set(daily_sales_A.keys()))
+average_daily_sales_B = total_sales_B / len(set(daily_sales_B.keys()))
+
+# Find the product with the highest sales on each day
+daily_highest_sales_product = {date: "A" if daily_sales_A[date] > daily_sales_B[date] else "B" for date in set(daily_sales_A.keys())}
+
+# Print the results
+print("Total Sales for Product A:", total_sales_A)
+print("Total Sales for Product B:", total_sales_B)
+print("Date with Highest Total Sales:", date_with_highest_sales)
+print("Average Daily Sales for Product A:", average_daily_sales_A)
+print("Average Daily Sales for Product B:", average_daily_sales_B)
+print("Product with Highest Sales on Each Day:", daily_highest_sales_product)
